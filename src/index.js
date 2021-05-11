@@ -5,42 +5,7 @@ import randomColor from 'randomcolor'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import './Test5.css'
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
-
-const grid = 3.5
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 ${grid}px 0 0`,
-  borderRadius: 30,
-
-  // change background colour if dragging
-  background: isDragging ? 'grey' : 'lightgrey',
-  fontSize: 14,
-
-  // styles we need to apply on draggables
-  ...draggableStyle
-})
-
-const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? 'lightgreen' : 'white',
-  display: 'flex',
-  alignSelf: 'flex-start',
-  borderRadius: 30,
-  padding: grid,
-  textAlign: 'center',
-  overflow: 'auto'
-})
-
-class InteractiveChart extends Component {
+export default class ChartComponent extends Component {
   constructor(props) {
     super(props)
     const data = require('../sample.json')
@@ -118,13 +83,46 @@ class InteractiveChart extends Component {
     }
   }
 
+  reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list)
+    const [removed] = result.splice(startIndex, 1)
+    result.splice(endIndex, 0, removed)
+
+    return result
+  }
+
+  getItemStyle = (isDragging, draggableStyle) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: 'none',
+    padding: 3.5 * 2,
+    margin: `0 3.5px 0 0`,
+    borderRadius: 30,
+
+    // change background colour if dragging
+    background: isDragging ? 'grey' : 'lightgrey',
+    fontSize: 14,
+
+    // styles we need to apply on draggables
+    ...draggableStyle
+  })
+
+  getListStyle = (isDraggingOver) => ({
+    background: isDraggingOver ? 'lightgreen' : 'white',
+    display: 'flex',
+    alignSelf: 'flex-start',
+    borderRadius: 30,
+    padding: 3.5,
+    textAlign: 'center',
+    overflow: 'auto'
+  })
+
   onDragEnd(result) {
     // dropped outside the list
     if (!result.destination) {
       return
     }
 
-    const items = reorder(
+    const items = this.reorder(
       this.state.items,
       result.source.index,
       result.destination.index
@@ -843,7 +841,7 @@ class InteractiveChart extends Component {
                 {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
-                    style={getListStyle(snapshot.isDraggingOver)}
+                    style={this.getListStyle(snapshot.isDraggingOver)}
                     {...provided.droppableProps}
                   >
                     {this.state.items.map((item, index) => (
@@ -857,7 +855,7 @@ class InteractiveChart extends Component {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            style={getItemStyle(
+                            style={this.getItemStyle(
                               snapshot.isDragging,
                               provided.draggableProps.style
                             )}
@@ -929,4 +927,3 @@ class InteractiveChart extends Component {
     )
   }
 }
-export default InteractiveChart
