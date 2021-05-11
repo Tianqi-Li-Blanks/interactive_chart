@@ -4,14 +4,13 @@ import ReactEcharts from 'echarts-for-react'
 import randomColor from 'randomcolor'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import styles from './styles.module.css'
+import PropTypes from 'prop-types'
 
 export default class ChartComponent extends Component {
   constructor(props) {
     super(props)
-    const data = require('../sample.json')
-
     this.state = {
-      data: data,
+      data: this.props.data,
       graphType: 'line',
       withArea: false,
       dateUnit: 'Days',
@@ -31,6 +30,14 @@ export default class ChartComponent extends Component {
       clearProcessor: false
     }
     this.onDragEnd = this.onDragEnd.bind(this)
+  }
+
+  static propTypes = {
+    data: PropTypes.array
+  }
+
+  static defaultProps = {
+    data: null
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
