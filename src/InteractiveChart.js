@@ -40,7 +40,7 @@ const getListStyle = (isDraggingOver) => ({
   overflow: 'auto'
 })
 
-class Test2 extends Component {
+class InteractiveChart extends Component {
   constructor(props) {
     super(props)
     const data = require('../sample.json')
@@ -78,7 +78,6 @@ class Test2 extends Component {
     }
 
     if (this.state.clear !== prevState.clear) {
-      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ filterSet: new Set() })
       this.setState({ brand: [] })
       this.setState({ plan: [] })
@@ -930,4 +929,4 @@ class Test2 extends Component {
     )
   }
 }
-export default Test2
+export default InteractiveChart

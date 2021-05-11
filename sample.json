@@ -1,0 +1,407 @@
+{
+  "20210101": [
+    {
+      "brand": "meshare",
+      "revenue": 100,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 150,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 300,
+      "plan": "30-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 350,
+      "plan": "30-day",
+      "processor": "Paypal"
+    }
+  ],
+  "20210102": [
+    {
+      "brand": "meshare",
+      "revenue": 100,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 150,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 300,
+      "plan": "30-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 350,
+      "plan": "30-day",
+      "processor": "Paypal"
+    }
+  ],
+  "20210103": [
+    {
+      "brand": "meshare",
+      "revenue": 100,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 150,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 300,
+      "plan": "30-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 350,
+      "plan": "30-day",
+      "processor": "Paypal"
+    }
+  ],
+
+  "20210104": [
+    {
+      "brand": "meshare",
+      "revenue": 100,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 150,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 300,
+      "plan": "30-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 350,
+      "plan": "30-day",
+      "processor": "Paypal"
+    }
+  ],
+  "20210105": [
+    {
+      "brand": "meshare",
+      "revenue": 100,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 150,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "30-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 350,
+      "plan": "30-day",
+      "processor": "Paypal"
+    }
+  ],
+
+  "20210106": [
+    {
+      "brand": "meshare",
+      "revenue": 100,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 150,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 300,
+      "plan": "30-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 550,
+      "plan": "30-day",
+      "processor": "Paypal"
+    }
+  ],
+
+  "20210107": [
+    {
+      "brand": "meshare",
+      "revenue": 100,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 150,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 300,
+      "plan": "30-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 350,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 550,
+      "plan": "30-day",
+      "processor": "Paypal"
+    }
+  ],
+
+  "20210108": [
+    {
+      "brand": "meshare",
+      "revenue": 100,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 150,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 250,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 200,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "meshare",
+      "revenue": 300,
+      "plan": "30-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 350,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo",
+      "revenue": 350,
+      "plan": "30-day",
+      "processor": "Paypal"
+    }
+  ]
+
+}

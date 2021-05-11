@@ -1,0 +1,142 @@
+ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index:999;
+}
+
+.main-button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #78b97b;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+    width: 230px;
+    margin: 1px;
+}
+
+.button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #78b97b;
+    border: none;
+    color: #FFFFFF;
+    text-align: left;
+    font-size: 16px;
+    padding: 10px;
+    width: 230px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 1px;
+}
+
+.button span {
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    transition: 0.5s;
+}
+
+.button span:after {
+    content: '\00bb';
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button:hover span {
+    padding-right: 10px;
+}
+
+.button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.secChild {
+    float: right;
+    margin-left: 1px;
+    margin-bottom: 0px;
+    margin-top: 10px;
+    color: #FFFFFF;
+    background-color: #7bb86d;
+    border-radius: 4px;
+    width: 120px;
+    height: 140px;
+}
+.sec {display: block; margin: 10px}
+
+.label{margin-left: 10px;}
+.input{float: right}
+
+.apply{
+    border: none;
+    background-color: #e53e3f;
+    color: white;
+    width: 100px;
+    border-radius: 4px
+}
+
+.select-option {
+    background-color: #7bb86d;
+    color: #FFFFFF;
+    width: 150px;
+    height: 35px;
+    border-radius: 4px;
+    margin: 1px;
+}
+
+.clear-all {
+    background-color: #e53e3f;
+    color: white;
+    font-size: 13px;
+    border: none;
+    height: 36px;
+    width: 60px;
+    border-radius: 4px
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+.col-1 {width: 8.33%; }
+.col-2 {width: 16.66%; }
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+/* viewport <= 1000px */
+@media screen and (max-width: 1000px) {
+    * {
+        font-size: 1em;
+    }
+}
+
+/* viewport <= 630px */
+@media screen and (max-width: 630px) {
+    .row div {
+        padding: 1.5%;
+    }
+}
+
+/* viewport <= 500px */
+@media screen and (max-width: 500px) {
+    * {
+        font-size: 0.9em;
+    }
+}
