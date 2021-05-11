@@ -3,7 +3,7 @@ import { graphic } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import randomColor from 'randomcolor'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import './Test5.css'
+import styles from './styles.module.css'
 
 export default class ChartComponent extends Component {
   constructor(props) {
@@ -282,7 +282,7 @@ export default class ChartComponent extends Component {
       <ul className='main'>
         <li style={{ position: 'absolute' }}>
           <button
-            className='main-button'
+            className={styles.mainButton}
             id='main filter'
             onClick={this.toggleMainFilter}
           >
@@ -301,10 +301,10 @@ export default class ChartComponent extends Component {
   renderSecondFilter = (filter) => {
     const filterItems = []
     filterItems.push(
-      <l1 className='sec'>
+      <l1 className={styles.sec}>
         <div>
           <input
-            className='input'
+            className={styles.input}
             type='checkbox'
             id={filter.value + '_all'}
             key='All'
@@ -312,7 +312,7 @@ export default class ChartComponent extends Component {
             onClick={this.clickFilter}
             checked={this.isFilterChecked(filter.value, 'all')}
           />
-          <label className='label' htmlFor={filter.value + '_all'}>
+          <label className={styles.label} htmlFor={filter.value + '_all'}>
             All
           </label>
         </div>
@@ -321,10 +321,10 @@ export default class ChartComponent extends Component {
 
     filter.options.forEach((option) => {
       filterItems.push(
-        <l1 className='sec'>
+        <l1 className={styles.sec}>
           <div>
             <input
-              className='input'
+              className={styles.input}
               type='checkbox'
               id={filter.value + '_' + option.value}
               key={option.label}
@@ -333,7 +333,7 @@ export default class ChartComponent extends Component {
               checked={this.isFilterChecked(filter.value, option.value)}
             />
             <label
-              className='label'
+              className={styles.label}
               htmlFor={filter.value + '_' + option.value}
             >
               {option.label}
@@ -344,8 +344,8 @@ export default class ChartComponent extends Component {
     })
 
     filterItems.push(
-      <l1 className='sec'>
-        <button className='apply' key='apply' onClick={this.applyFilter}>
+      <l1 className={styles.sec}>
+        <button className={styles.apply} key='apply' onClick={this.applyFilter}>
           Apply
         </button>
       </l1>
@@ -356,7 +356,7 @@ export default class ChartComponent extends Component {
     return (
       <li className='parent'>
         <button
-          className='button'
+          className={styles.button}
           key={filter.label}
           value={filter.value}
           onClick={this.clickSecMain}
@@ -365,7 +365,7 @@ export default class ChartComponent extends Component {
           <span />
         </button>
         {this.state.currentMainFilter === filter.value && (
-          <ul className='secChild'>{filterItems}</ul>
+          <ul className={styles.secChild}>{filterItems}</ul>
         )}
       </li>
     )
@@ -834,7 +834,7 @@ export default class ChartComponent extends Component {
       <div>
         <h1 style={{ textAlign: 'left' }}>Revenue</h1>
 
-        <div className='row'>
+        <div className={styles.row}>
           <div>
             <DragDropContext onDragEnd={this.onDragEnd}>
               <Droppable droppableId='droppable' direction='horizontal'>
@@ -883,17 +883,20 @@ export default class ChartComponent extends Component {
               </Droppable>
             </DragDropContext>
           </div>
-          <div className='col-2'>{this.renderMainFilter()}</div>
-          <div className='col-1'>
+          <div className={styles.col2}>{this.renderMainFilter()}</div>
+          <div className={styles.col1}>
             {this.state.filterSet.size !== 0 &&
               this.state.currentMainFilter === '' && (
-                <button className='clear-all' onClick={this.clickClear}>
+                <button className={styles.clearAll} onClick={this.clickClear}>
                   Clear all
                 </button>
               )}
           </div>
-          <div className='col-1'>
-            <select className='select-option' onChange={this.handleChange}>
+          <div className={styles.col2}>
+            <select
+              className={styles.selectOption}
+              onChange={this.handleChange}
+            >
               <option selected disabled>
                 Select Graph style
               </option>
@@ -902,8 +905,11 @@ export default class ChartComponent extends Component {
               <option value='Area Graph'>Area Graph</option>
             </select>
           </div>
-          <div className='col-2'>
-            <select className='select-option' onChange={this.handleChange2}>
+          <div className={styles.col2}>
+            <select
+              className={styles.selectOption}
+              onChange={this.handleChange2}
+            >
               <option selected disabled>
                 Select Date Unit
               </option>

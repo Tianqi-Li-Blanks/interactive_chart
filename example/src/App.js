@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-//import ChartComponent from "./components/ChartComponent";
 import ChartComponent from 'interactive_chart'
-//import { ExampleComponent } from 'interactive_chart'
-// import 'interactive_chart/dist/index.css'
+import 'interactive_chart/dist/index.css'
 
 class App extends Component {
   // constructor(props) {
