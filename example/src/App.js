@@ -17,7 +17,7 @@ class App extends Component {
     return (
       <div className="App">
         <ChartComponent data={this.state.input}
-
+                        selectGraph={this.state.selectGraph}
                         dataUnit={this.state.dateUnit}/>
       </div>
     );
