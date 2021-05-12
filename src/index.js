@@ -11,9 +11,10 @@ export default class ChartComponent extends Component {
     super(props)
     this.state = {
       data: this.props.data,
-      graphType: 'line',
+      selectGraph: this.props.selectGraph,
+      graphType: 'bar',
       withArea: false,
-      dateUnit: 'Days',
+      dateUnit: this.props.dateUnit,
 
       brand: [],
       plan: [],
@@ -33,11 +34,15 @@ export default class ChartComponent extends Component {
   }
 
   static propTypes = {
-    data: PropTypes.array
+    data: PropTypes.array,
+    selectGraph: PropTypes.string,
+    dateUnit: PropTypes.string
   }
 
   static defaultProps = {
-    data: null
+    data: null,
+    selectGraph: 'Bar Graph',
+    dateUnit: 'Days'
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -88,6 +93,10 @@ export default class ChartComponent extends Component {
       const echartInstance = this.echartRef.getEchartsInstance()
       echartInstance.clear()
     }
+  }
+
+  componentDidMount() {
+    this.getType(this.state.selectGraph)
   }
 
   reorder = (list, startIndex, endIndex) => {
@@ -442,10 +451,6 @@ export default class ChartComponent extends Component {
     return this.toggleMainFilter()
   }
 
-  componentDidMount() {
-    this.getType('Bar Graph')
-  }
-
   getType = (str) => {
     if (str === 'Bar Graph') {
       this.setState({ graphType: 'bar' })
@@ -564,6 +569,7 @@ export default class ChartComponent extends Component {
 
   handleChange = (e) => {
     this.getType(e.target.value)
+    this.setState({ selectGraph: e.target.value })
   }
 
   handleChange2 = (e) => {
@@ -901,6 +907,7 @@ export default class ChartComponent extends Component {
           </div>
           <div className={styles.col2}>
             <select
+              value={this.state.selectGraph}
               className={styles.selectOption}
               onChange={this.handleChange}
             >
@@ -914,6 +921,7 @@ export default class ChartComponent extends Component {
           </div>
           <div className={styles.col2}>
             <select
+              value={this.state.dateUnit}
               className={styles.selectOption}
               onChange={this.handleChange2}
             >

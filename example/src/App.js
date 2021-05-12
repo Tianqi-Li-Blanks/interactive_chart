@@ -8,13 +8,17 @@ class App extends Component {
     const data = require('./sample.json')
     this.state = {
       input: data,
+      selectGraph: 'Line Graph',
+      dateUnit: 'Weeks',
     };
   }
 
   render() {
     return (
       <div className="App">
-        <ChartComponent data={this.state.input}/>
+        <ChartComponent data={this.state.input}
+
+                        dataUnit={this.state.dateUnit}/>
       </div>
     );
   }
