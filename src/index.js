@@ -15,10 +15,9 @@ export default class ChartComponent extends Component {
       graphType: 'bar',
       withArea: false,
       dateUnit: this.props.dateUnit,
+      Filter: this.props.filter,
 
-      brand: [],
-      plan: [],
-      processor: [],
+      filterName: [],
 
       filterSet: new Set(),
       currentMainFilter: '',
@@ -26,77 +25,86 @@ export default class ChartComponent extends Component {
       items: [],
       clear: false,
 
-      clearBrand: false,
-      clearPlan: false,
-      clearProcessor: false
+      apply: false
+    }
+    let count = 0
+    while (count < this.props.filter.length) {
+      this.state[this.props.filter[count].value] = []
+      this.state['clear' + this.props.filter[count].label] = false
+      count++
     }
     this.onDragEnd = this.onDragEnd.bind(this)
   }
 
   static propTypes = {
     data: PropTypes.array,
+    filter: PropTypes.array,
     selectGraph: PropTypes.string,
     dateUnit: PropTypes.string
   }
 
   static defaultProps = {
     data: null,
+    filter: null,
     selectGraph: 'Bar Graph',
     dateUnit: 'Days'
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (
-      this.state.brand !== prevState.brand ||
-      this.state.plan !== prevState.plan ||
-      this.state.processor !== prevState.processor
-    ) {
-      this.setState({ items: this.getItems() })
-    }
+    // if (
+    //     this.state.brands !== prevState.brands ||
+    //     this.state.plan !== prevState.plan ||
+    //     this.state.processor !== prevState.processor
+    // ) {
+    //     this.setState({ items: this.getItems() })
+    // }
+
+    this.state.Filter.forEach((filter) => {
+      if (this.state[filter.value] !== prevState[filter.value]) {
+        this.setState({ items: this.getItems() })
+      }
+    })
 
     if (this.state.clear !== prevState.clear) {
       this.setState({ filterSet: new Set() })
-      this.setState({ brand: [] })
-      this.setState({ plan: [] })
-      this.setState({ processor: [] })
+      this.state.Filter.forEach((filter) => {
+        const key = filter.value
+        this.setState({ [key]: [] })
+      })
       const echartInstance = this.echartRef.getEchartsInstance()
       echartInstance.clear()
     }
 
-    if (this.state.clearBrand !== prevState.clearBrand) {
-      const newFilterSet = this.state.filterSet
-      newFilterSet.delete('brands_all')
-      newFilterSet.delete('brands_1')
-      newFilterSet.delete('brands_2')
-      this.setState({ brand: [] })
-      this.setState({ filterSet: newFilterSet })
-      const echartInstance = this.echartRef.getEchartsInstance()
-      echartInstance.clear()
-    }
-
-    if (this.state.clearPlan !== prevState.clearPlan) {
-      const newFilterSet = this.state.filterSet
-      newFilterSet.delete('plan_all')
-      newFilterSet.delete('plan_1')
-      newFilterSet.delete('plan_2')
-      this.setState({ plan: [] })
-      const echartInstance = this.echartRef.getEchartsInstance()
-      echartInstance.clear()
-    }
-
-    if (this.state.clearProcessor !== prevState.clearProcessor) {
-      const newFilterSet = this.state.filterSet
-      newFilterSet.delete('processor_all')
-      newFilterSet.delete('processor_1')
-      newFilterSet.delete('processor_2')
-      this.setState({ processor: [] })
-      const echartInstance = this.echartRef.getEchartsInstance()
-      echartInstance.clear()
-    }
+    this.state.Filter.forEach((filter) => {
+      if (
+        this.state['clear' + filter.label] !== prevState['clear' + filter.label]
+      ) {
+        const newFilterSet = this.state.filterSet
+        const key = filter.value
+        newFilterSet.delete(filter.value + '_all')
+        for (let i = 1; i <= filter.options.length; i++) {
+          if (newFilterSet.has(filter.value + '_' + i.toString())) {
+            newFilterSet.delete(filter.value + '_' + i.toString())
+          }
+        }
+        this.setState({ [key]: [] })
+        this.setState({ filterSet: newFilterSet })
+        const echartInstance = this.echartRef.getEchartsInstance()
+        echartInstance.clear()
+      }
+    })
   }
 
   componentDidMount() {
     this.getType(this.state.selectGraph)
+    let count = 0
+    while (count < this.state.Filter.length) {
+      const temp = this.state.Filter[count]
+      this.setState((prevState) => ({
+        filterName: [...prevState.filterName, temp.value]
+      }))
+      count++
+    }
   }
 
   reorder = (list, startIndex, endIndex) => {
@@ -147,33 +155,6 @@ export default class ChartComponent extends Component {
     this.setState({ items })
   }
 
-  _FILTERS = [
-    {
-      label: 'Processor',
-      value: 'processor',
-      options: [
-        { label: 'Ios', value: 1 },
-        { label: 'Paypal', value: 2 }
-      ]
-    },
-    {
-      label: 'Brands',
-      value: 'brands',
-      options: [
-        { label: 'meShare', value: 1 },
-        { label: 'Zmodo', value: 2 }
-      ]
-    },
-    {
-      label: 'Plan',
-      value: 'plan',
-      options: [
-        { label: '7-day', value: 1 },
-        { label: '30-day', value: 2 }
-      ]
-    }
-  ]
-
   toggleMainFilter = () => {
     this.setState({
       showMainFilter: !this.state.showMainFilter,
@@ -193,95 +174,46 @@ export default class ChartComponent extends Component {
   }
 
   clickFilter = (e) => {
-    console.log(e.target.value)
     return this.clickSecondFilter(e.target.value)
   }
 
   clickSecondFilter = (dValue) => {
     const newFilterSet = this.state.filterSet
-    if (dValue.includes('brands')) {
-      if (newFilterSet.has('brands_all')) {
-        if (dValue !== 'brands_all') {
-          newFilterSet.delete('brands_all')
-          newFilterSet.add('brands_1')
-          newFilterSet.add('brands_2')
-          newFilterSet.delete(dValue)
-        } else {
-          newFilterSet.delete(dValue)
-        }
-      } else {
-        if (dValue !== 'brands_all') {
-          if (newFilterSet.has(dValue)) {
+
+    this.state.Filter.forEach((filter) => {
+      const key = filter.value
+      if (dValue.includes(key)) {
+        if (newFilterSet.has(key + '_all')) {
+          if (dValue !== key + '_all') {
+            newFilterSet.delete(key + '_all')
+            for (let i = 1; i <= filter.options.length; i++) {
+              newFilterSet.add(key + '_' + i.toString())
+            }
             newFilterSet.delete(dValue)
           } else {
-            newFilterSet.add(dValue)
-          }
-        } else {
-          newFilterSet.delete('brands_1')
-          newFilterSet.delete('brands_2')
-          newFilterSet.add(dValue)
-        }
-      }
-    } else if (dValue.includes('processor')) {
-      if (newFilterSet.has('processor_all')) {
-        if (dValue !== 'processor_all') {
-          newFilterSet.delete('processor_all')
-          newFilterSet.add('processor_1')
-          newFilterSet.add('processor_2')
-          newFilterSet.delete(dValue)
-        } else {
-          newFilterSet.delete(dValue)
-        }
-      } else {
-        if (dValue !== 'processor_all') {
-          if (newFilterSet.has(dValue)) {
             newFilterSet.delete(dValue)
-          } else {
-            newFilterSet.add(dValue)
           }
         } else {
-          newFilterSet.delete('processor_1')
-          newFilterSet.delete('processor_2')
-          newFilterSet.add(dValue)
-        }
-      }
-    } else if (dValue.includes('plan')) {
-      if (newFilterSet.has('plan_all')) {
-        if (dValue !== 'plan_all') {
-          newFilterSet.delete('plan_all')
-          newFilterSet.add('plan_1')
-          newFilterSet.add('plan_2')
-          newFilterSet.delete(dValue)
-        } else {
-          newFilterSet.delete(dValue)
-        }
-      } else {
-        if (dValue !== 'plan_all') {
-          if (newFilterSet.has(dValue)) {
-            newFilterSet.delete(dValue)
+          if (dValue !== key + '_all') {
+            if (newFilterSet.has(dValue)) {
+              newFilterSet.delete(dValue)
+            } else {
+              newFilterSet.add(dValue)
+            }
           } else {
+            for (let i = 1; i <= filter.options.length; i++) {
+              newFilterSet.delete(key + '_' + i.toString())
+            }
             newFilterSet.add(dValue)
           }
-        } else {
-          newFilterSet.delete('plan_1')
-          newFilterSet.delete('plan_2')
-          newFilterSet.add(dValue)
         }
       }
-    } else {
-      if (newFilterSet.has(dValue)) {
-        newFilterSet.delete(dValue)
-      } else {
-        newFilterSet.add(dValue)
-      }
-    }
+    })
 
     this.setState({ filterSet: newFilterSet })
-    console.log(this.state.filterSet)
   }
 
   clickSecMain = (e) => {
-    console.log(e.target.value)
     this.clickMainFilter(e.target.value)
   }
 
@@ -291,7 +223,7 @@ export default class ChartComponent extends Component {
 
   renderMainFilter = () => {
     const filterItems = []
-    this._FILTERS.forEach((filter) => {
+    this.state.Filter.forEach((filter) => {
       filterItems.push(this.renderSecondFilter(filter))
     })
     return (
@@ -365,9 +297,6 @@ export default class ChartComponent extends Component {
           Apply
         </button>
       </l1>
-
-      //  <Dropdown.Item key='apply' text='Apply'
-      // onClick={this.applyFilter}></Dropdown.Item>
     )
     return (
       <li className='parent'>
@@ -388,63 +317,28 @@ export default class ChartComponent extends Component {
   }
 
   applyFilter = () => {
-    //! !!TODO: apply filter
-    // has error
     const newFilterSet = this.state.filterSet
-    if (this.state.currentMainFilter === 'processor') {
-      this.setState({ processor: [] })
-      console.log(this.state.processor.length)
-      console.log(newFilterSet)
-      if (newFilterSet.has('processor_all')) {
-        this.setState({ processor: ['IOS', 'Paypal'] })
-      } else {
-        if (newFilterSet.has('processor_1')) {
-          this.setState((prevState) => ({
-            processor: [...prevState.processor, 'IOS']
-          }))
-        }
-        if (newFilterSet.has('processor_2')) {
-          this.setState((prevState) => ({
-            processor: [...prevState.processor, 'Paypal']
-          }))
-        }
-      }
+    this.state.Filter.forEach((filter) => {
+      const key = filter.value
+      this.setState({ [key]: [] })
 
-      console.log(this.state.processor.length)
-    }
-    if (this.state.currentMainFilter === 'brands') {
-      this.setState({ brand: [] })
-      if (newFilterSet.has('brands_all')) {
-        this.setState({ brand: ['meshare', 'zmodo'] })
-      } else {
-        if (newFilterSet.has('brands_1')) {
-          this.setState((prevState) => ({
-            brand: [...prevState.brand, 'meshare']
-          }))
-        }
-        if (newFilterSet.has('brands_2')) {
-          this.setState((prevState) => ({
-            brand: [...prevState.brand, 'zmodo']
-          }))
-        }
-      }
-    }
+      const subtitle = []
+      if (newFilterSet.has(filter.value + '_all')) {
+        filter.options.forEach((option) => {
+          subtitle.push(option.label)
+        })
 
-    if (this.state.currentMainFilter === 'plan') {
-      this.setState({ plan: [] })
-      if (newFilterSet.has('plan_all')) {
-        this.setState({ plan: ['7-day', '30-day'] })
+        this.setState({ [key]: subtitle })
       } else {
-        if (newFilterSet.has('plan_1')) {
-          this.setState((prevState) => ({ plan: [...prevState.plan, '7-day'] }))
-        }
-        if (newFilterSet.has('plan_2')) {
-          this.setState((prevState) => ({
-            plan: [...prevState.plan, '30-day']
-          }))
+        const subtitle = []
+        for (let i = 1; i <= filter.options.length; i++) {
+          if (newFilterSet.has(filter.value + '_' + i.toString())) {
+            subtitle.push(filter.options[i - 1].label)
+          }
+          this.setState({ [key]: subtitle })
         }
       }
-    }
+    })
     this.setState({ currentMainFilter: '' })
     const echartInstance = this.echartRef.getEchartsInstance()
     echartInstance.clear()
@@ -463,42 +357,37 @@ export default class ChartComponent extends Component {
     }
   }
 
-  getAllLegend = () => {
-    const result = []
-    for (const key1 in this.state.brand) {
-      for (const key2 in this.state.plan) {
-        for (const key3 in this.state.processor) {
-          result.push(
-            this.state.brand[key1] +
-              '-' +
-              this.state.plan[key2] +
-              '-' +
-              this.state.processor[key3]
-          )
-        }
+  helper2 = (newFilterList, count, length, result) => {
+    const filter = newFilterList[count]
+    const fs = this.state[filter]
+    const output = []
+    for (const legend in result) {
+      for (const key in fs) {
+        const string = result[legend] + '_' + fs[key]
+        output.push(string)
       }
     }
-    return result
+    count++
+    if (count < length) {
+      return this.helper2(newFilterList, count, length, output)
+    } else {
+      return output
+    }
   }
 
-  getAllTData = (brand, plan, processor) => {
-    const data = this.state.data
-    const result = []
-    if (brand !== '' && plan !== '' && processor !== '') {
-      for (const time in data) {
-        const dataT = this.state.data[time]
-        for (const key in dataT) {
-          if (brand === dataT[key].brand) {
-            if (plan === dataT[key].plan) {
-              if (processor === dataT[key].processor) {
-                result.push(JSON.stringify(dataT[key].revenue))
-              }
-            }
-          }
-        }
-      }
+  getNameList = (newFilterList, count, length, result) => {
+    const filter = newFilterList[count]
+    const fs = this.state[filter]
+    for (const key in fs) {
+      result.push(fs[key])
     }
-    return result
+    count++
+
+    if (count < length) {
+      return this.helper2(newFilterList, count, length, result)
+    } else {
+      return result
+    }
   }
 
   getTimebyUnit = () => {
@@ -593,7 +482,12 @@ export default class ChartComponent extends Component {
     },
 
     legend: {
-      data: this.getAllLegend(),
+      data: this.getNameList(
+        this.state.filterName,
+        0,
+        this.state.filterName.length,
+        []
+      ),
       x: 50,
       y: 340
     },
@@ -606,7 +500,7 @@ export default class ChartComponent extends Component {
 
     grid: {
       left: '3%',
-      right: '3%',
+      right: '12%',
       top: '3%',
       bottom: '6%',
       containLabel: true
@@ -636,114 +530,128 @@ export default class ChartComponent extends Component {
     series: this.getList()
   })
 
-  getList = () => {
+  helperCheck = (dataList, dataTK) => {
+    let check = true
+    for (const da in dataList) {
+      let littleCheck = false
+      for (const fName in this.state.filterName) {
+        if (dataList[da] === dataTK[this.state.filterName[fName]]) {
+          littleCheck = true
+        }
+      }
+      check = check && littleCheck
+    }
+    return check
+  }
+
+  getDataByDays = (dataString) => {
+    const data = this.state.data
+    const dataList = dataString.split('_')
     const result = []
-    if (
-      this.state.brand === [] ||
-      this.state.plan === [] ||
-      this.state.processor === []
-    ) {
-      return result
-    } else {
-      for (const key1 in this.state.brand) {
-        for (const key2 in this.state.plan) {
-          for (const key3 in this.state.processor) {
-            const color = randomColor({ format: 'rgba', luminosity: 'dark' })
-            if (this.state.graphType === 'bar') {
-              result.push({
-                name:
-                  this.state.brand[key1] +
-                  '-' +
-                  this.state.plan[key2] +
-                  '-' +
-                  this.state.processor[key3],
-                type: this.state.graphType,
-                stack: '1',
-                label: {
-                  show: true
-                },
-                barMaxWidth: '40%',
-                data: this.getDataWithDate(
-                  this.state.brand[key1],
-                  this.state.plan[key2],
-                  this.state.processor[key3]
-                ),
-                itemStyle: { color: color.replace(/[^,]+(?=\))/, '1') }
-              })
-            } else {
-              if (this.state.withArea) {
-                result.push({
-                  name:
-                    this.state.brand[key1] +
-                    '-' +
-                    this.state.plan[key2] +
-                    '-' +
-                    this.state.processor[key3],
-                  type: this.state.graphType,
-                  stack: '1',
-                  areaStyle: {
-                    color: this.getAreaColor(color)
-                  },
-                  data: this.getDataWithDate(
-                    this.state.brand[key1],
-                    this.state.plan[key2],
-                    this.state.processor[key3]
-                  ),
-                  itemStyle: { color: color.replace(/[^,]+(?=\))/, '1') }
-                })
-              } else {
-                result.push({
-                  name:
-                    this.state.brand[key1] +
-                    '-' +
-                    this.state.plan[key2] +
-                    '-' +
-                    this.state.processor[key3],
-                  type: this.state.graphType,
-                  stack: '1',
-                  areaStyle: {
-                    color: this.getAreaColor(color)
-                  },
-                  data: this.getDataWithDate(
-                    this.state.brand[key1],
-                    this.state.plan[key2],
-                    this.state.processor[key3]
-                  ),
-                  itemStyle: { color: color.replace(/[^,]+(?=\))/, '1') }
-                })
-              }
-            }
+
+    if (dataList.length === this.state.filterName.length) {
+      for (const time in data) {
+        const dataT = this.state.data[time]
+        for (const key in dataT) {
+          const dataTK = dataT[key]
+          if (this.helperCheck(dataList, dataTK)) {
+            result.push(JSON.stringify(dataT[key].revenue))
           }
         }
       }
-      return result
     }
+    return result
   }
 
-  getDataWithDate = (brand, plan, processor) => {
-    const data = this.state.data
+  getList = () => {
+    const result = []
+    const answer = []
+    let check = false
+    this.state.Filter.forEach((filter) => {
+      if (this.state[filter.value].length === 0) {
+        check = true
+      }
+    })
+
+    if (check) {
+      return result
+    } else {
+      const list = this.getNameList(
+        this.state.filterName,
+        0,
+        this.state.filterName.length,
+        []
+      )
+      for (const name in list) {
+        const color = randomColor({ format: 'rgba', luminosity: 'dark' })
+        if (this.state.graphType === 'bar') {
+          answer.push({
+            name: list[name],
+            type: this.state.graphType,
+            stack: '1',
+            label: {
+              show: true
+            },
+            barMaxWidth: '40%',
+            data: this.getDataWithDaU(list[name]),
+            itemStyle: { color: color.replace(/[^,]+(?=\))/, '1') }
+          })
+        } else {
+          if (this.state.withArea) {
+            answer.push({
+              name: list[name],
+              type: this.state.graphType,
+              stack: '1',
+              areaStyle: {
+                color: this.getAreaColor(color)
+              },
+              data: this.getDataWithDaU(list[name]),
+              itemStyle: {
+                color: color.replace(/[^,]+(?=\))/, '1')
+              }
+            })
+          } else {
+            answer.push({
+              name: list[name],
+              type: this.state.graphType,
+              stack: '1',
+              areaStyle: {
+                color: this.getAreaColor(color)
+              },
+              data: this.getDataWithDaU(list[name]),
+              itemStyle: {
+                color: color.replace(/[^,]+(?=\))/, '1')
+              }
+            })
+          }
+        }
+      }
+    }
+    return answer
+  }
+
+  getDataWithDaU = (dataString) => {
     const result = []
     let count = 0
     let revenue = 0
+    const data = this.state.data
+    const dataList = dataString.split('_')
     if (this.state.dateUnit === 'Weeks') {
-      if (brand !== '' && plan !== '' && processor !== '') {
+      if (dataList.length === this.state.filterName.length) {
         for (const time in data) {
           const dataT = this.state.data[time]
           for (const key in dataT) {
-            if (brand === dataT[key].brand) {
-              if (plan === dataT[key].plan) {
-                if (processor === dataT[key].processor) {
-                  count++
-                  if (count === 6) {
-                    revenue += dataT[key].revenue
-                    revenue = Math.floor(revenue / 7)
-                    result.push(JSON.stringify(revenue))
-                    revenue = 0
-                    count = 0
-                  } else {
-                    revenue += dataT[key].revenue
-                  }
-                }
+            const dataTK = dataT[key]
+            if (this.helperCheck(dataList, dataTK)) {
+              count++
+              if (count === 6) {
+                revenue += dataT[key].revenue
+                revenue = Math.floor(revenue / 7)
+                result.push(JSON.stringify(revenue))
+                revenue = 0
+                count = 0
+              } else {
+                revenue += dataT[key].revenue
               }
             }
           }
@@ -755,24 +663,21 @@ export default class ChartComponent extends Component {
       }
       return result
     } else if (this.state.dateUnit === 'Months') {
-      if (brand !== '' && plan !== '' && processor !== '') {
+      if (dataList.length === this.state.filterName.length) {
         for (const time in data) {
           const dataT = this.state.data[time]
           for (const key in dataT) {
-            if (brand === dataT[key].brand) {
-              if (plan === dataT[key].plan) {
-                if (processor === dataT[key].processor) {
-                  count++
-                  if (count === 29) {
-                    revenue += dataT[key].revenue
-                    revenue = Math.floor(revenue / 30)
-                    result.push(JSON.stringify(revenue))
-                    revenue = 0
-                    count = 0
-                  } else {
-                    revenue += dataT[key].revenue
-                  }
-                }
+            const dataTK = dataT[key]
+            if (this.helperCheck(dataList, dataTK)) {
+              count++
+              if (count === 29) {
+                revenue += dataT[key].revenue
+                revenue = Math.floor(revenue / 30)
+                result.push(JSON.stringify(revenue))
+                revenue = 0
+                count = 0
+              } else {
+                revenue += dataT[key].revenue
               }
             }
           }
@@ -784,45 +689,27 @@ export default class ChartComponent extends Component {
       }
       return result
     } else {
-      return this.getAllTData(brand, plan, processor)
+      return this.getDataByDays(dataString)
     }
   }
 
   getItems = () => {
     let count = 0
     const result = []
-    let brand = ''
-    let plan = ''
-    let processor = ''
-    if (this.state.brand.length !== 0) {
-      brand += 'Brand:   '
-      for (const key1 in this.state.brand) {
-        brand += this.state.brand[key1]
-        brand += ' '
+    this.state.Filter.forEach((filter) => {
+      const name = filter.value
+      if (this.state[name].length !== 0) {
+        let temp = ''
+        temp += filter.label + ':   '
+        for (const key1 in this.state[name]) {
+          temp += this.state[name][key1]
+          temp += ' '
+        }
+        count++
+        result.push({ id: count.toString(), content: temp })
       }
-      count++
-      result.push({ id: count.toString(), content: brand })
-    }
+    })
 
-    if (this.state.plan.length !== 0) {
-      plan += 'Plan: '
-      for (const key1 in this.state.plan) {
-        plan += this.state.plan[key1]
-        plan += ' '
-      }
-      count++
-      result.push({ id: count.toString(), content: plan })
-    }
-
-    if (this.state.processor.length !== 0) {
-      processor += 'Processor:   '
-      for (const key1 in this.state.processor) {
-        processor += this.state.processor[key1]
-        processor += ' '
-      }
-      count++
-      result.push({ id: count.toString(), content: processor })
-    }
     return result
   }
 
@@ -831,15 +718,14 @@ export default class ChartComponent extends Component {
   }
 
   clickClearOne = (e) => {
-    console.log(e.target.value)
     const v = e.target.value
-    if (v.includes('Processor')) {
-      this.setState({ clearProcessor: !this.state.clearProcessor })
-    } else if (v.includes('Plan')) {
-      this.setState({ clearPlan: !this.state.clearPlan })
-    } else if (v.includes('Brand')) {
-      this.setState({ clearBrand: !this.state.clearBrand })
-    }
+
+    this.state.Filter.forEach((filter) => {
+      if (v.includes(filter.label)) {
+        const key = 'clear' + filter.label
+        this.setState({ [key]: !this.state[key] })
+      }
+    })
   }
 
   render() {
@@ -942,7 +828,7 @@ export default class ChartComponent extends Component {
             this.echartRef = e
           }}
           option={this.getOption()}
-          style={{ height: 360, width: window.innerWidth * 0.8 }}
+          style={{ height: 360, width: window.innerWidth * 0.9 }}
         />
       </div>
     )
