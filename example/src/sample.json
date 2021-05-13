@@ -12,6 +12,7 @@
       "plan": "30-day",
       "processor": "IOS"
     },
+
     {
       "brand": "zmodo",
       "revenue": 150,
@@ -24,6 +25,20 @@
       "plan": "30-day",
       "processor": "IOS"
     },
+
+    {
+      "brand": "zmodo2",
+      "revenue": 150,
+      "plan": "7-day",
+      "processor": "IOS"
+    },
+    {
+      "brand": "zmodo2",
+      "revenue": 250,
+      "plan": "30-day",
+      "processor": "IOS"
+    },
+
     {
       "brand": "meshare",
       "revenue": 200,
@@ -44,6 +59,18 @@
     },
     {
       "brand": "zmodo",
+      "revenue": 350,
+      "plan": "30-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo2",
+      "revenue": 250,
+      "plan": "7-day",
+      "processor": "Paypal"
+    },
+    {
+      "brand": "zmodo2",
       "revenue": 350,
       "plan": "30-day",
       "processor": "Paypal"

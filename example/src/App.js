@@ -20,17 +20,18 @@ class App extends Component {
         value: 'brand',
         options: [
           { label: 'meshare', value: 1 },
-          { label: 'zmodo', value: 2 }
+          { label: 'zmodo', value: 2 },
+          // { label: 'zmodo2', value: 3 }
         ]
       },
       {
-        label: 'Plan',
-        value: 'plan',
+        label: 'www',
+        value: 'www',
         options: [
-          { label: '7-day', value: 1 },
-          { label: '30-day', value: 2 }
+          { label: 'awday', value: 1 },
+          { label: 'wwwwa', value: 2 },
         ]
-      }
+      },
     ]
     this.state = {
       input: data,
